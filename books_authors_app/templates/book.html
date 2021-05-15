@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+      crossorigin="anonymous"
+    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Crafty+Girls&display=swap"
+      rel="stylesheet"
+    />
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css'%}" />
+    <title>Books/Authors - Book Details</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+      <a class="navbar-brand" href="#">Books & Authors</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <a class="nav-link" href="/"
+              >Books <span class="sr-only">(current)</span></a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/authors">Authors</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <div class="container">
+      <h1>{{ book.title }}</h1>
+      <p><strong>Id</strong> {{ book.id }}</p>
+      <p><strong>Description</strong> {{ book.description }}</p>
+      <p><strong>Authors</strong></p>
+      <ul>
+        {% for author in book.authors.all %}
+        <li>{{ author.name }}</li>
+        {% endfor %}
+      </ul>
+      {% if authors %}
+      <form action="/books/{{ book.id }}/assign" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="author_id">Add Author</label>
+          <select name="author_id" id="author_id" class="form-control">
+            {% for author in authors %}
+            <option value="{{ author.id }}">{{ author.name}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <button class="btn btn-primary">Add</button>
+      </form>
+      {% endif %}
+    </div>
+  </body>
+</html>
